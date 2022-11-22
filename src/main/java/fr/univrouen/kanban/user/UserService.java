@@ -1,5 +1,6 @@
 package fr.univrouen.kanban.user;
 
+import fr.univrouen.kanban.utils.Consts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,11 +9,6 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-
-    private final String EMAIL_USED = "{ \"error\": \"email already used!\" }";
-    private final String USER_SAVED = "{ \"success\": \"user saved successfully.\" }";
-    private final String USER_DELETED = "{ \"success\": \"user deleted successfully.\" }";
-    private final String USER_NOT_FOUND = "{ \"error\": \"user not found.\" }";
 
     private final UserRepository userRepository;
 
@@ -31,10 +27,10 @@ public class UserService {
         if (!optionalUser.isPresent()) {
             userRepository.save(user);
 
-            return USER_SAVED;
+            return Consts.USER_SAVED;
         }
 
-        return EMAIL_USED;
+        return Consts.EMAIL_USED;
     }
 
     public User getUserByUid(Long uid) {
@@ -53,9 +49,9 @@ public class UserService {
         if (userExists) {
             userRepository.deleteById(uid);
 
-            return USER_DELETED;
+            return Consts.USER_DELETED;
         }
 
-        return USER_NOT_FOUND;
+        return Consts.USER_NOT_FOUND;
     }
 }

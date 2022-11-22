@@ -1,15 +1,12 @@
 package fr.univrouen.kanban.task;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/task")
+@RequestMapping(path = "api/v1/tasks")
 public class TaskController {
 
     private final TaskService taskService;
@@ -27,6 +24,26 @@ public class TaskController {
     @GetMapping(path = "/{tid}")
     public Task getTaskByTid(@PathVariable("tid") Long tid) {
         return taskService.getTaskByTid(tid);
+    }
+
+    @PostMapping(path = "save")
+    public String saveTask(@RequestBody Task task) {
+        return taskService.saveTask(task);
+    }
+
+    @DeleteMapping(path = "/delete/{tid}")
+    public String deleteTask(@PathVariable("tid") Long tid) {
+        return taskService.deleteTask(tid);
+    }
+
+    @GetMapping(path = "/list/{lid}")
+    public List<Task> getListTasks(@PathVariable("lid") Long lid) {
+        return taskService.getListTasks(lid);
+    }
+
+    @GetMapping(path = "/kanban/{kid}")
+    public List<Task> getKanbanTasks(@PathVariable("kid") Long kid) {
+        return taskService.getListTasks(kid);
     }
 
 }
