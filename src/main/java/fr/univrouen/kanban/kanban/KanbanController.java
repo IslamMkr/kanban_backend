@@ -1,5 +1,6 @@
 package fr.univrouen.kanban.kanban;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,6 +11,7 @@ public class KanbanController {
 
     private final KanbanService kanbanService;
 
+    @Autowired
     public KanbanController(KanbanService kanbanService) {
         this.kanbanService = kanbanService;
     }
