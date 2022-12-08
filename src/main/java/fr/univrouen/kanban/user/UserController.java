@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @PostMapping(path = "save")
-    public String saveUser(@RequestBody User user) {
+    public User saveUser(@RequestBody User user) {
         return userService.saveUser(user);
     }
 
@@ -35,4 +35,5 @@ public class UserController {
     public String deleteUser(@PathVariable("uid") Long uid) {
         return userService.deleteUser(uid);
     }
+
 }

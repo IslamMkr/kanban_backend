@@ -15,27 +15,32 @@ public class User {
     private Long uid;
     private String firstname;
     private String lastname;
+    @Column(name = "username", length = 50, unique = true)
+    private String username;
     private String email;
     private String password;
-
     @OneToMany
     private List<Kanban> kanbans;
 
     public User() {}
 
-    public User(Long uid, String firstname, String lastname, String email, String password) {
+    public User(Long uid, String firstname, String lastname, String username, String email, String password, List<Kanban> kanbans) {
         this.uid = uid;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.username = username;
         this.email = email;
         this.password = password;
+        this.kanbans = kanbans;
     }
 
-    public User(String firstname, String lastname, String email, String password) {
+    public User(String firstname, String lastname, String username, String email, String password, List<Kanban> kanbans) {
         this.firstname = firstname;
         this.lastname = lastname;
+        this.username = username;
         this.email = email;
         this.password = password;
+        this.kanbans = kanbans;
     }
 
     public Long getUid() {
@@ -62,6 +67,14 @@ public class User {
         this.lastname = lastname;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -78,13 +91,13 @@ public class User {
         this.password = password;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "uid=" + uid +
-                ", firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+    public List<Kanban> getKanbans() {
+        return kanbans;
     }
+
+    public void setKanbans(List<Kanban> kanbans) {
+        this.kanbans = kanbans;
+    }
+
 }
+
