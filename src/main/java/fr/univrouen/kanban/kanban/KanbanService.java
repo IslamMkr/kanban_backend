@@ -29,10 +29,8 @@ public class KanbanService {
         return null;
     }
 
-    public String saveKanban(Kanban kanban) {
-        kanbanRepository.save(kanban);
-
-        return Consts.KANBAN_SAVED;
+    public Kanban saveKanban(Kanban kanban) {
+        return kanbanRepository.save(kanban);
     }
 
     public List<Kanban> getUserKanbans(Long uid) {

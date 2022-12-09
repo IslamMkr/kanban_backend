@@ -1,6 +1,7 @@
 package fr.univrouen.kanban.kanban;
 
 import fr.univrouen.kanban.user.User;
+import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 
@@ -12,25 +13,28 @@ public class Kanban {
             strategy = GenerationType.AUTO
     )
     private Long kid;
+    @NonNull
     private String title;
+    @NonNull
     private String visibility;
 
+    @NonNull
     @ManyToOne
-    private User owner;
+    private User user;
 
     public Kanban() {}
 
-    public Kanban(Long kid, String title, String visibility, User owner) {
+    public Kanban(Long kid, String title, String visibility, User user) {
         this.kid = kid;
         this.title = title;
         this.visibility = visibility;
-        this.owner = owner;
+        this.user = user;
     }
 
-    public Kanban(String title, String visibility, User owner) {
+    public Kanban(String title, String visibility, User user) {
         this.title = title;
         this.visibility = visibility;
-        this.owner = owner;
+        this.user = user;
     }
 
     public Long getKid() {
@@ -57,12 +61,12 @@ public class Kanban {
         this.visibility = visibility;
     }
 
-    public User getOwner() {
-        return owner;
+    public User getUser() {
+        return user;
     }
 
-    public void setOwner(User owner) {
-        this.owner = owner;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
@@ -71,7 +75,7 @@ public class Kanban {
                 "kid=" + kid +
                 ", title='" + title + '\'' +
                 ", visibility='" + visibility + '\'' +
-                ", owner=" + owner +
+                ", user=" + user +
                 '}';
     }
 }

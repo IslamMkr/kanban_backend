@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface KanbanRepository extends JpaRepository<Kanban, Long> {
 
-    @Query("SELECT k FROM Kanban k WHERE k.owner = ?1")
+    @Query("SELECT k FROM Kanban k WHERE k.user = ?1")
     List<Kanban> getUserKanbans(Long uid);
 
     @Query("SELECT k FROM Kanban k WHERE k.visibility = ?1")

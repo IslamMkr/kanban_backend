@@ -27,7 +27,7 @@ public class KanbanController {
     }
 
     @PostMapping(path = "save")
-    public String saveKanban(@RequestBody Kanban kanban) {
+    public Kanban saveKanban(@RequestBody Kanban kanban) {
         return kanbanService.saveKanban(kanban);
     }
 
