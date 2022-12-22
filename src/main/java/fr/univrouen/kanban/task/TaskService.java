@@ -1,8 +1,11 @@
 package fr.univrouen.kanban.task;
 
+import fr.univrouen.kanban.list.ListRepository;
+import fr.univrouen.kanban.user.User;
 import fr.univrouen.kanban.utils.Consts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,10 +15,12 @@ public class TaskService {
 
     // Task repository
     private final TaskRepository taskRepository;
+    private final ListRepository listRepository;
 
     @Autowired
-    public TaskService(TaskRepository taskRepository) {
+    public TaskService(TaskRepository taskRepository, ListRepository listRepository) {
         this.taskRepository = taskRepository;
+        this.listRepository = listRepository;
     }
 
     /**
@@ -48,10 +53,8 @@ public class TaskService {
      * @param task
      * @return
      */
-    public String saveTask(Task task) {
-        taskRepository.save(task);
-
-        return Consts.TASK_SAVED;
+    public Task saveTask(Task task) {
+        return taskRepository.save(task);
     }
 
     /**
@@ -90,4 +93,40 @@ public class TaskService {
         return taskRepository.getKanbanTasks(kid);
     }
 
+    @Transactional
+    public Task updateTaskList(Long tid, Long lid) {
+        Optional<Task> optionalTask = taskRepository.findById(tid);
+        Optional<fr.univrouen.kanban.list.List> optionalList = listRepository.findById(lid);
+
+        if (!optionalTask.isPresent()) {
+            return null;
+        }
+
+        if (!optionalList.isPresent()) {
+            return null;
+        }
+
+        Task task = optionalTask.get();
+
+        task.setList(optionalList.get());
+
+        return task;
+    }
+
+    public List<Task> getUserTasks(Long uid) {
+        List<Task> userTasks = taskRepository.getUserTasks(uid);
+
+        for (Task task: userTasks) {
+            task.getKanban().getOwner().setPassword(null);
+            task.getUser().setPassword(null);
+
+            List<User> members = task.getKanban().getMembers();
+
+            for (User user : members) {
+                user.setPassword(null);
+            }
+        }
+
+        return userTasks;
+    }
 }

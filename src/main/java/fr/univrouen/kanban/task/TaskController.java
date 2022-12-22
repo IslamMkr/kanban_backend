@@ -27,11 +27,11 @@ public class TaskController {
     }
 
     @PostMapping(path = "save")
-    public String saveTask(@RequestBody Task task) {
+    public Task saveTask(@RequestBody Task task) {
         return taskService.saveTask(task);
     }
 
-    @DeleteMapping(path = "/delete/{tid}")
+    @DeleteMapping(path = "delete/{tid}")
     public String deleteTask(@PathVariable("tid") Long tid) {
         return taskService.deleteTask(tid);
     }
@@ -43,7 +43,17 @@ public class TaskController {
 
     @GetMapping(path = "/kanban/{kid}")
     public List<Task> getKanbanTasks(@PathVariable("kid") Long kid) {
-        return taskService.getListTasks(kid);
+        return taskService.getKanbanTasks(kid);
+    }
+
+    @PutMapping(path = "/{tid}/list/{lid}")
+    public Task updateTaskList(@PathVariable("tid") Long tid, @PathVariable("lid") Long lid) {
+        return taskService.updateTaskList(tid, lid);
+    }
+
+    @GetMapping(path = "/user/{uid}")
+    public List<Task> getUserTasks(@PathVariable("uid") Long uid) {
+        return taskService.getUserTasks(uid);
     }
 
 }

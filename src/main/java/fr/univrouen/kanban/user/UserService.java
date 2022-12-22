@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Service @Transactional
+@Service
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
@@ -36,24 +36,26 @@ public class UserService implements UserDetailsService {
 
         User user = optionalUser.get();
 
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                authorities
+                new ArrayList<SimpleGrantedAuthority>()
         );
     }
 
     public List<User> getUsers() {
-        return userRepository.findAll();
+        List<User> users = userRepository.findAll();
+
+        return users;
     }
 
     public User saveUser(User user) {
-        Optional<User> optionalUser = userRepository.findUserByEmail(user.getEmail());
+        Optional<User> userWithEmail = userRepository.findUserByEmail(user.getEmail());
+        Optional<User> userWithUsername = userRepository.findUserByUsername(user.getUsername());
 
-        if (optionalUser.isEmpty()) {
+        boolean validData = !user.getFirstname().isEmpty() && !user.getLastname().isEmpty() && !user.getPassword().isEmpty();
+
+        if (userWithEmail.isEmpty() && userWithUsername.isEmpty() && validData) {
             String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
             user.setPassword(encodedPassword);
 
@@ -67,7 +69,10 @@ public class UserService implements UserDetailsService {
         Optional<User> optionalUser = userRepository.findById(uid);
 
         if (optionalUser.isPresent()) {
-            return optionalUser.get();
+            User user = optionalUser.get();
+            user.setPassword(null);
+
+            return user;
         }
 
         return null;
@@ -83,5 +88,19 @@ public class UserService implements UserDetailsService {
         }
 
         return Consts.USER_NOT_FOUND;
+    }
+
+    public User getUserByUsername(String username) {
+        Optional<User> optionalUser = userRepository.findUserByUsername(username);
+
+        if (optionalUser.isPresent()) {
+
+            User user = optionalUser.get();
+            user.setPassword(null);
+
+            return user;
+        }
+
+        return null;
     }
 }

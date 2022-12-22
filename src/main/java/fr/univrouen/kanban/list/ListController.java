@@ -3,6 +3,7 @@ package fr.univrouen.kanban.list;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "//localhost:8080/")
 @RestController
 @RequestMapping(path = "api/v1/lists")
 public class ListController {
@@ -20,7 +21,7 @@ public class ListController {
     }
 
     @PostMapping(path = "save")
-    public String saveList(List list) {
+    public String saveList(@RequestBody List list) {
         return listService.saveList(list);
     }
 

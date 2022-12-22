@@ -1,10 +1,12 @@
 package fr.univrouen.kanban.kanban;
 
+import fr.univrouen.kanban.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "//localhost:8080/")
 @RestController
 @RequestMapping(path = "api/v1/kanbans")
 public class KanbanController {
@@ -26,7 +28,7 @@ public class KanbanController {
         return kanbanService.getKanbanById(kid);
     }
 
-    @PostMapping(path = "save")
+    @PostMapping(path = "/save")
     public Kanban saveKanban(@RequestBody Kanban kanban) {
         return kanbanService.saveKanban(kanban);
     }
@@ -36,7 +38,7 @@ public class KanbanController {
         return kanbanService.getUserKanbans(uid);
     }
 
-    @GetMapping(path = "public")
+    @GetMapping(path = "/public")
     public List<Kanban> getPublicKanbans() {
         return kanbanService.getPublicKanbans();
     }
@@ -44,6 +46,16 @@ public class KanbanController {
     @DeleteMapping(path = "/delete/{kid}")
     public String deleteKanban(@PathVariable("kid") Long kid) {
         return kanbanService.deleteKanban(kid);
+    }
+
+    @PutMapping(path = "/{kid}/addmember/{username}")
+    public Kanban addMemberToKanban(@PathVariable("kid") Long kid, @PathVariable("username") String username) {
+        return kanbanService.addMemberToKanban(kid, username);
+    }
+
+    @GetMapping(path = "/{kid}/members")
+    public List<User> getKanbanMembers(@PathVariable("kid") Long kid) {
+        return kanbanService.getKanbanMembers(kid);
     }
 
 }

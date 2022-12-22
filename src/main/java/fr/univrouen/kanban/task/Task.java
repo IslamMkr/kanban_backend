@@ -1,11 +1,13 @@
 package fr.univrouen.kanban.task;
 
+import com.sun.istack.NotNull;
 import fr.univrouen.kanban.kanban.Kanban;
 import fr.univrouen.kanban.list.List;
 import fr.univrouen.kanban.user.User;
+import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tasks")
@@ -15,29 +17,33 @@ public class Task {
             strategy = GenerationType.AUTO
     )
     private Long tid;
+    @NonNull
+    @NotNull
+    private String title;
+    @NonNull
+    @NotNull
     private String description;
-    private LocalDate time_limit;
 
+    private LocalDateTime time_limit;
+
+    @NonNull
+    @NotNull
     @ManyToOne
     private Kanban kanban;
 
     @ManyToOne
     private User user;
 
+    @NonNull
+    @NotNull
     @ManyToOne
     private List list;
 
     public Task() {}
 
-    public Task(
-                Long tid,
-                String description,
-                LocalDate time_limit,
-                Kanban kanban,
-                User user,
-                List list
-    ) {
+    public Task(Long tid, @NonNull String title, @NonNull String description, LocalDateTime time_limit, @NonNull Kanban kanban, User user, @NonNull List list) {
         this.tid = tid;
+        this.title = title;
         this.description = description;
         this.time_limit = time_limit;
         this.kanban = kanban;
@@ -45,13 +51,17 @@ public class Task {
         this.list = list;
     }
 
-    public Task(
-                String description,
-                LocalDate time_limit,
-                Kanban kanban,
-                User user,
-                List list
-    ) {
+    @NonNull
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(@NonNull String title) {
+        this.title = title;
+    }
+
+    public Task(@NonNull String title, @NonNull String description, LocalDateTime time_limit, @NonNull Kanban kanban, User user, @NonNull List list) {
+        this.title = title;
         this.description = description;
         this.time_limit = time_limit;
         this.kanban = kanban;
@@ -67,27 +77,29 @@ public class Task {
         this.tid = tid;
     }
 
+    @NonNull
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(@NonNull String description) {
         this.description = description;
     }
 
-    public LocalDate getTime_limit() {
+    public LocalDateTime getTime_limit() {
         return time_limit;
     }
 
-    public void setTime_limit(LocalDate time_limit) {
+    public void setTime_limit(LocalDateTime time_limit) {
         this.time_limit = time_limit;
     }
 
+    @NonNull
     public Kanban getKanban() {
         return kanban;
     }
 
-    public void setKanban(Kanban kanban) {
+    public void setKanban(@NonNull Kanban kanban) {
         this.kanban = kanban;
     }
 
@@ -99,11 +111,12 @@ public class Task {
         this.user = user;
     }
 
+    @NonNull
     public List getList() {
         return list;
     }
 
-    public void setList(List list) {
+    public void setList(@NonNull List list) {
         this.list = list;
     }
 
@@ -111,6 +124,7 @@ public class Task {
     public String toString() {
         return "Task{" +
                 "tid=" + tid +
+                ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", time_limit=" + time_limit +
                 ", kanban=" + kanban +

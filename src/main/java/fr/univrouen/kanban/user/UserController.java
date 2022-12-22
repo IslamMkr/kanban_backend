@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "//localhost:8080/")
 @RestController
 @RequestMapping(path = "api/v1/users")
 public class UserController {
@@ -24,6 +25,12 @@ public class UserController {
     @GetMapping(path = "/{uid}")
     public User getUserByUid(@PathVariable("uid") Long uid) {
         return userService.getUserByUid(uid);
+    }
+
+    @GetMapping(path = "/username/{username}")
+    public User getUserByUsername(@PathVariable("username") String username) {
+        System.out.println("Controller : " + username);
+        return userService.getUserByUsername(username);
     }
 
     @PostMapping(path = "save")
